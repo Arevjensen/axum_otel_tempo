@@ -25,11 +25,6 @@ struct Settings {
 
 #[tokio::main]
 async fn main() {
-    match dotenvy::dotenv() {
-        Ok(path) => println!(".env read successfully from {}", path.display()),
-        Err(e) => println!("Could not load .env file: {e}"),
-    };
-
     let settings = load_settings();
 
     init_otel_telemetry(settings);
