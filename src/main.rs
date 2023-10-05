@@ -13,7 +13,7 @@ use std::net::TcpListener;
 use std::time::Duration;
 use tokio::time::sleep;
 use tower_http::trace::TraceLayer;
-use tracing::{event, instrument, Level};
+use tracing::instrument;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::{EnvFilter, Registry};
 
@@ -53,7 +53,6 @@ async fn main() {
 
 #[instrument]
 async fn handler() -> Html<&'static str> {
-    event!(Level::ERROR, "inside my_function!");
     Html(sub_function().await)
 }
 
