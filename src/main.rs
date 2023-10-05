@@ -1,6 +1,7 @@
 use axum::response::Html;
 use axum::routing::get;
 use axum::Router;
+use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use std::net::TcpListener;
 use std::time::Duration;
 use tokio::time::sleep;
@@ -14,7 +15,9 @@ async fn main() {
 
     let app = Router::new()
         .route("/", get(handler))
-        .layer(TraceLayer::new_for_http());
+        .layer(TraceLayer::new_for_http())
+        .layer(OtelInResponseLayer::default())
+        .layer(OtelAxumLayer::default());
 
     let listener = TcpListener::bind("127.0.0.1:3000").unwrap();
     tracing::info!("listening on {}", listener.local_addr().unwrap());
